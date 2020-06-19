@@ -4,11 +4,12 @@ export default class Map {
   constructor(map, mapType) {
     this.googleMap = this.initMap(map, mapType);
     this.markers = [];
-    this.infoWindow = InfoWindow.createInfoWindow();
+    this.infoWindow = new InfoWindow();
     this.geoCoder = this.createGeocoder();
+    this.address = "";
   }
 
-  initMap(map, mapType) {
+  initMap(map, mapType = "roadmap") {
     const googleMap = new google.maps.Map(map, {
       center: {
         lat: 32.610720489718126,
@@ -26,31 +27,30 @@ export default class Map {
   }
 
   geocodeLatLng(marker, map) {
-    this.geoCoder.geocode({ location: marker.getPosition() }, function (
-      results,
-      status
-    ) {
-      console.log(map);
-      if (status === "OK") {
-        if (results[0]) {
-          map.openInfo(marker, results[0].formatted_address);
+    //let address;
 
-          console.log(results[0].formatted_address);
-        } else {
-          window.alert("No results found");
+    this.geoCoder.geocode(
+      { location: marker.getPosition() },
+      (results, status) => {
+        if (results[0]) {
+          if (status === "OK") {
+            map.setAddress(results[0].formatted_address);
+          }
         }
-      } else {
-        window.alert("Geocoder failed due to: " + status);
       }
-    });
+    );
   }
 
-  openInfo(marker, content) {
-    console.log(this);
-    this.infoWindow.setContent(`
-    ${content}
-    `);
-    this.infoWindow.open(this.googleMap, marker);
+  setAddress(address) {
+    this.address = address;
+  }
+
+  getAddress() {
+    return this.address;
+  }
+
+  openInfo(marker, content, map) {
+    this.infoWindow.openInfo(marker, content, map);
   }
 
   renderAllPointsSaved(points) {
@@ -58,8 +58,15 @@ export default class Map {
     points.forEach((point) => {
       var currentLatLng = { lat: point.lat, lng: point.lng };
       console.log(currentLatLng);
-      this.createMarker(currentLatLng, this.getGoogleMap());
+      this.createMarker(currentLatLng, this.getGoogleMap()).setTitle(
+        point.title
+      );
     });
+  }
+
+  renderPointInformation({ address, title, marker }) {
+    address.value = this.address;
+    title.value = marker.getTitle();
   }
 
   createMarker(latLng) {
@@ -75,7 +82,6 @@ export default class Map {
   }
 
   focusMarkerPosition(zoom = 2) {
-    //console.log(this.googleMap);
     this.googleMap.setZoom(this.googleMap.getZoom() + zoom);
   }
 

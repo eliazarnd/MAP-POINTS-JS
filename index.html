@@ -5,10 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link rel="stylesheet" href="src/css/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.13.0/css/all.css"
+      integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V"
+      crossorigin="anonymous"
+    />
 
     <title>Map</title>
   </head>
   <body>
+    <div class="controls">
+      <div class="control-container">
+        <i class="far fa-user icon-conf"></i>
+        <input type="text" class="title-point" placeholder="Title point" />
+      </div>
+      <div class="control-container">
+        <i class="far fa-address-card icon-conf"></i>
+        <input type="text" class="address" placeholder="Address Selection" />
+      </div>
+      <div class="control-container">
+        <input type="button" class="btn btn-title-point" value="Save Point" />
+      </div>
+    </div>
     <main id="map" class="map"></main>
 
     <script
