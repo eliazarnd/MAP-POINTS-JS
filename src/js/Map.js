@@ -1,12 +1,14 @@
 import InfoWindow from "./InfoWindow.js";
+import Geocode from "./Geocode.js";
 
 export default class Map {
-  constructor(map, mapType) {
+  constructor(map, mapType, markerCreator) {
     this.googleMap = this.initMap(map, mapType);
     this.markers = [];
     this.infoWindow = new InfoWindow();
-    this.geoCoder = this.createGeocoder();
+    this.geoCoder = new Geocode();
     this.address = "";
+    this.MarkerCreator = markerCreator;
   }
 
   initMap(map, mapType = "roadmap") {
@@ -22,23 +24,9 @@ export default class Map {
     return googleMap;
   }
 
-  createGeocoder() {
-    return new google.maps.Geocoder();
-  }
-
   geocodeLatLng(marker, map) {
     //let address;
-
-    this.geoCoder.geocode(
-      { location: marker.getPosition() },
-      (results, status) => {
-        if (results[0]) {
-          if (status === "OK") {
-            map.setAddress(results[0].formatted_address);
-          }
-        }
-      }
-    );
+    this.geoCoder.geocodeLatLng(marker, map);
   }
 
   setAddress(address) {
@@ -70,14 +58,10 @@ export default class Map {
   }
 
   createMarker(latLng) {
-    let marker = new google.maps.Marker({
-      position: latLng,
-      map: this.googleMap,
-      draggable: true,
-    });
-    //marker.addListener("click", this.openInfo(marker));
+    const marker = this.MarkerCreator.createMarker(latLng, this.googleMap);
     this.markers.push(marker);
     this.googleMap.panTo(latLng);
+
     return marker;
   }
 
