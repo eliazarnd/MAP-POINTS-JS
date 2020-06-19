@@ -16,6 +16,13 @@
   </head>
   <body>
     <div class="controls">
+      <!-- <input
+        type="checkbox"
+        class="activate-point-creator"
+        name="activePoint"
+        id="activatePointCreator"
+      /> -->
+      <div class="activate-point-creator"></div>
       <div class="control-container">
         <i class="far fa-user icon-conf"></i>
         <input type="text" class="title-point" placeholder="Title point" />
@@ -25,7 +32,12 @@
         <input type="text" class="address" placeholder="Address Selection" />
       </div>
       <div class="control-container">
-        <input type="button" class="btn btn-title-point" value="Save Point" />
+        <input
+          id="savePoint"
+          type="button"
+          class="btn btn-title-point"
+          value="Save Point"
+        />
       </div>
     </div>
     <main id="map" class="map"></main>

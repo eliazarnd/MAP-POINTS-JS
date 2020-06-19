@@ -13,20 +13,40 @@ body {
   position: absolute;
   top: 10px;
   left: 50%;
-  width: 600px;
+  width: 50vw;
   transform: translateX(-50%);
   z-index: 2;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
 }
 
 input[type="text"] {
+  width: 100px;
   border-radius: 5px;
   border: none;
   font-size: 1em;
   padding: 0.7em 3em;
   outline: none;
   margin-left: 5px;
+}
+
+.activate-point-creator {
+  width: 50px;
+  height: 100%;
+  background-color: crimson;
+  position: absolute;
+  z-index: 2;
+  left: -60px;
+  transition: background-color 0.3s ease-in;
+}
+
+.activate-point-creator.active {
+  background-color: darkblue;
+}
+
+.activate-point-creator:hover {
+  cursor: pointer;
+  background-color: darkblue;
 }
 
 .control-container {
