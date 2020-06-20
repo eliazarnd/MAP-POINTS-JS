@@ -16,6 +16,15 @@
   </head>
   <body>
     <div class="controls">
+      <div class="controls-marker-container">
+        <div class="basic-component" id="create-marker">
+          <i class="fas fa-map-marked-alt icon-marker"></i>
+        </div>
+        <div class="basic-component" id="show-markers">
+          <i class="fas fa-eye icon-marker"></i>
+        </div>
+      </div>
+
       <div class="control-container">
         <i class="far fa-user icon-conf"></i>
         <input type="text" class="title-point" placeholder="Title point" />
@@ -25,7 +34,12 @@
         <input type="text" class="address" placeholder="Address Selection" />
       </div>
       <div class="control-container">
-        <input type="button" class="btn btn-title-point" value="Save Point" />
+        <input
+          id="savePoint"
+          type="button"
+          class="btn btn-title-point"
+          value="Save Point"
+        />
       </div>
     </div>
     <main id="map" class="map"></main>

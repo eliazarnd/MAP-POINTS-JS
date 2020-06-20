@@ -3,7 +3,10 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
-
+p {
+  margin: 0;
+  padding: 0;
+}
 .map {
   width: 100vw;
   height: 100vh;
@@ -13,20 +16,73 @@ body {
   position: absolute;
   top: 10px;
   left: 50%;
-  width: 600px;
-  transform: translateX(-50%);
+  width: 70vw;
+  transform: translateX(-40%);
   z-index: 2;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.controls-marker-container {
+  display: flex;
+  width: 100px;
+  justify-content: space-evenly;
 }
 
 input[type="text"] {
+  width: 100px;
   border-radius: 5px;
   border: none;
   font-size: 1em;
   padding: 0.7em 3em;
   outline: none;
   margin-left: 5px;
+}
+
+.basic-component {
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  background-color: white;
+  padding: 3px;
+  /* position: absolute; */
+  border: solid 1px black;
+  z-index: 2;
+  left: -30px;
+  transition: all 0.3s ease-in;
+  display: flex;
+  justify-content: center;
+}
+
+.activate-point-creator {
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  background-color: white;
+  padding: 3px;
+  /* position: absolute; */
+  border: solid 1px black;
+  z-index: 2;
+  left: -30px;
+  transition: all 0.3s ease-in;
+  display: flex;
+  justify-content: center;
+}
+
+.basic-component.active {
+  transform: rotatey(180deg);
+  background-color: black;
+}
+
+.basic-component:hover {
+  cursor: pointer;
+  background-color: black;
+  transform: rotatey(180deg);
+}
+
+.icon-marker:hover {
+  color: white;
 }
 
 .control-container {
@@ -39,6 +95,11 @@ input[type="text"] {
   position: absolute;
   top: 10px;
   left: 10px;
+}
+
+.icon-marker {
+  font-size: 1.5em;
+  transition: color 0.3s ease-in;
 }
 
 .btn {
