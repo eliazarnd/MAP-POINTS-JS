@@ -9,6 +9,24 @@ export default class Map {
     this.geoCoder = new Geocode();
     this.address = "";
     this.MarkerCreator = markerCreator;
+    this.canCreateMarker = false;
+    this.currentMarketSelected = null;
+  }
+
+  setCurrentMarketSelected(marker) {
+    this.currentMarketSelected = marker;
+  }
+
+  getCurrentMarketSelected() {
+    return this.currentMarketSelected;
+  }
+
+  setCanCreateMarker(state) {
+    this.canCreateMarker = state;
+  }
+
+  getCanCreateMarker() {
+    return this.canCreateMarker;
   }
 
   initMap(map, mapType = "roadmap") {
@@ -42,10 +60,9 @@ export default class Map {
   }
 
   renderAllPointsSaved(points) {
-    console.log(points);
     points.forEach((point) => {
       var currentLatLng = { lat: point.lat, lng: point.lng };
-      console.log(currentLatLng);
+
       this.createMarker(currentLatLng, this.getGoogleMap()).setTitle(
         point.title
       );
@@ -60,7 +77,7 @@ export default class Map {
   createMarker(latLng) {
     const marker = this.MarkerCreator.createMarker(latLng, this.googleMap);
     this.markers.push(marker);
-    this.googleMap.panTo(latLng);
+    //this.googleMap.panTo(latLng);
 
     return marker;
   }
