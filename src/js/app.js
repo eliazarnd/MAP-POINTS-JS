@@ -49,6 +49,7 @@ map.getGoogleMap().addListener("click", (eventMap) => {
 });
 
 setTimeout(function () {
+  console.log(db.pointsList);
   map.renderAllPointsSaved(db.pointsList);
   const markers = map.getAllMarkers();
   console.log(markers);
