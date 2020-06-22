@@ -4,6 +4,8 @@ import Marker from "./Marker.js";
 
 import DataBase from "./dataBase.js";
 
+import createAnNoty from "./Noty/utilNoty.js";
+
 const db = new DataBase("Points");
 
 db.createDataBase();
@@ -15,11 +17,15 @@ const $address = document.querySelector(".address");
 const $titlePoint = document.querySelector(".title-point");
 let canCreatePoints = false;
 
-const map = new Map(
-  $map,
-  "roadmap",
-  new Marker("https://pngimg.com/uploads/gps/gps_PNG22.png")
-);
+//https://pngimg.com/uploads/gps/gps_PNG22.png
+
+const markersURL = {
+  default: "https://pngimg.com/uploads/gps/gps_PNG22.png",
+  normal: "https://image.flaticon.com/icons/svg/3063/3063196.svg",
+  test: "https://image.flaticon.com/icons/svg/1483/1483336.svg",
+};
+
+const map = new Map($map, "roadmap", new Marker(markersURL.test));
 
 map.getGoogleMap().setTilt(45);
 
@@ -31,6 +37,7 @@ map.getGoogleMap().addListener("click", (eventMap) => {
 
     console.log(marker.getTitle());
     map.setCanCreateMarker(false);
+    map.getGoogleMap().setOptions({ draggableCursor: "" });
     marker.addListener("click", (mark) => {
       renderAddress(marker, map);
       map.setCurrentMarketSelected(marker);
@@ -42,6 +49,11 @@ map.getGoogleMap().addListener("click", (eventMap) => {
       renderAddress(marker, map);
     });
   } else {
+    createAnNoty(
+      "warning",
+      `You can not create marker, activate option first`,
+      "topRight"
+    );
     console.log("No puedes crear puntos primero activa la opcion");
   }
 
@@ -93,8 +105,20 @@ document.querySelector("#create-marker").addEventListener("click", (event) => {
 
   canCreatePoints = !canCreatePoints;
   map.setCanCreateMarker(canCreatePoints);
+
+  if (!pointCreator.classList.contains("active")) {
+    map.getGoogleMap().setOptions({ draggableCursor: "crosshair" });
+  } else {
+    map.getGoogleMap().setOptions({ draggableCursor: "" });
+  }
+
   pointCreator.classList.toggle("active");
   console.log(canCreatePoints);
+});
+
+map.getGoogleMap().addListener("mousemove", () => {
+  //document.getElementsByTagName("body")[0].style.cursor = "crosshair";
+  //console.log($map);
 });
 
 let isVisible = true;
@@ -123,6 +147,11 @@ document
     });
 
     console.log(map.getCurrentMarketSelected().getPosition().lat());
+    createAnNoty(
+      "info",
+      `The point with name ${$titlePoint.value} was saved`,
+      "topRight"
+    );
   });
 
 function createPoint(point) {
@@ -130,3 +159,9 @@ function createPoint(point) {
 }
 
 //google.maps.event.addDomListener(window, "load", map);
+
+document.querySelector("#show-noty").addEventListener("click", (e) => {
+  console.log("Show noty");
+
+  createAnNoty("info", "The point was saved", "topRight");
+});

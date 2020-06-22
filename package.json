@@ -1,0 +1,28 @@
+{
+  "name": "map-points-js",
+  "version": "1.0.0",
+  "description": "This is an app for creating points and query thah points",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eliazarnd/MAP-POINTS-JS.git"
+  },
+  "keywords": [
+    "maps",
+    "markers",
+    "points",
+    "googlemaps"
+  ],
+  "author": "Eliazar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eliazarnd/MAP-POINTS-JS/issues"
+  },
+  "homepage": "https://github.com/eliazarnd/MAP-POINTS-JS#readme",
+  "dependencies": {
+    "noty": "^3.2.0-beta"
+  }
+}
