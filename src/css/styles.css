@@ -20,6 +20,16 @@ p {
   height: 100vh;
 }
 
+.cross-layer {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  background-color: transparent;
+  z-index: 3;
+  cursor: crosshair;
+}
+
 .controls {
   position: absolute;
   top: 5px;
@@ -112,6 +122,10 @@ input[type="text"] {
   font-size: 1.5em;
   transition: color 0.3s ease-in;
   color: var(--icon-color);
+}
+
+.cursor-marker {
+  cursor: crosshair;
 }
 
 .btn {

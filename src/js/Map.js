@@ -37,6 +37,9 @@ export default class Map {
       },
       zoom: 10,
       mapTypeId: mapType,
+      /* 
+      draggableCursor:
+        "https://image.flaticon.com/icons/svg/3063/3063196.svg), auto;", */
     });
 
     return googleMap;

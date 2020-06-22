@@ -12,6 +12,9 @@
       crossorigin="anonymous"
     />
 
+    <link rel="stylesheet" href="./node_modules/noty/lib/noty.css" />
+    <link rel="stylesheet" href="./node_modules/noty/lib/themes/nest.css" />
+
     <title>Map</title>
   </head>
   <body>
@@ -40,6 +43,9 @@
       <div class="basic-component" id="show-markers">
         <i class="fas fa-eye icon-marker"></i>
       </div>
+      <div class="basic-component" id="show-noty">
+        <i class="fas fa-user icon-marker"></i>
+      </div>
     </div>
     <main id="map" class="map"></main>
 
@@ -48,6 +54,7 @@
       defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiAy0l0r6UoKIpzDRpap-tcmKv0fFstWI"
     ></script>
+    <script src="./node_modules/noty/lib/noty.min.js"></script>
     <script src="./src/js/app.js" type="module"></script>
   </body>
 </html>
