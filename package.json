@@ -4,7 +4,8 @@
   "description": "This is an app for creating points and query thah points",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm install"
   },
   "repository": {
     "type": "git",
