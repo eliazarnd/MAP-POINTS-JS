@@ -3,7 +3,7 @@ export default class Marker {
     this.iconUrl = url;
   }
 
-  createMarker(latLng, map) {
+  createMarker(latLng, map, id) {
     let marker = new google.maps.Marker({
       position: latLng,
       map,
@@ -13,6 +13,7 @@ export default class Marker {
         url: this.iconUrl,
       },
     });
+    marker.id = id;
     return marker;
   }
 
