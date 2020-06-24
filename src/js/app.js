@@ -6,16 +6,25 @@ import DataBase from "./dataBase.js";
 
 import createAnNoty from "./Noty/utilNoty.js";
 
-const db = new DataBase("Points");
+import FireStoreDb from "./fireStore.js";
 
-db.createDataBase();
+//const db = new DataBase("Points");
 
-console.log(db);
+//db.createDataBase();
+
+const fireStore = new FireStoreDb();
+console.log(fireStore);
+fireStore.getAllPoints();
+fireStore.getPointByTitle("Mi punto");
 
 const $map = document.getElementById("map");
 const $address = document.querySelector(".address");
 const $titlePoint = document.querySelector(".title-point");
+const $btnDelete = document.querySelector(".btn-delete");
+console.log($btnDelete);
 let canCreatePoints = false;
+
+let status = "";
 
 //https://pngimg.com/uploads/gps/gps_PNG22.png
 
@@ -33,15 +42,21 @@ map.getGoogleMap().addListener("click", (eventMap) => {
   //console.log(map.getGoogleMap());
   console.log(points);
   if (map.getCanCreateMarker()) {
-    const marker = map.createMarker(eventMap.latLng);
+    status = "create";
 
-    console.log(marker.getTitle());
+    console.log(status);
+    const marker = map.createMarker(eventMap.latLng);
+    map.setCurrentMarketSelected(marker);
+    renderAddress(marker, map);
+    console.log(map);
     map.setCanCreateMarker(false);
     map.getGoogleMap().setOptions({ draggableCursor: "" });
     marker.addListener("click", (mark) => {
       renderAddress(marker, map);
       map.setCurrentMarketSelected(marker);
+      status = "edit";
       console.log(map);
+      console.log(status);
       //map.focusMarkerPosition();
     });
 
@@ -61,8 +76,9 @@ map.getGoogleMap().addListener("click", (eventMap) => {
 });
 
 setTimeout(function () {
-  console.log(db.pointsList);
-  map.renderAllPointsSaved(db.pointsList);
+  //console.log(db.pointsList);
+  console.log(fireStore.points);
+  map.renderAllPointsSaved(fireStore.points);
   const markers = map.getAllMarkers();
   console.log(markers);
 
@@ -71,6 +87,8 @@ setTimeout(function () {
       renderAddress(marker, map);
       map.setCurrentMarketSelected(marker);
       console.log(map);
+      status = "edit";
+      console.log(status);
       //map.focusMarkerPosition();
     });
   });
@@ -84,7 +102,7 @@ function getCoordsFromPosition(position) {
 
 function renderAddress(marker, map) {
   map.geocodeLatLng(marker, map);
-  setTimeout(function () {
+  setTimeout(async function () {
     map.openInfo(marker, map.getAddress(), map.getGoogleMap());
 
     map.renderPointInformation({
@@ -136,15 +154,26 @@ document.querySelector("#show-markers").addEventListener("click", (event) => {
 
 document
   .getElementById("savePoint")
-  .addEventListener("click", function (event) {
+  .addEventListener("click", async function (event) {
     event.preventDefault();
     console.log(event);
 
-    createPoint({
+    let newPoint = {
       title: $titlePoint.value,
       lat: map.getCurrentMarketSelected().getPosition().lat(),
       lng: map.getCurrentMarketSelected().getPosition().lng(),
-    });
+    };
+
+    if (status === "edit") {
+      fireStore.updateApoint(map.getCurrentMarketSelected().id, newPoint);
+    } else {
+      createPoint(newPoint);
+      const point = await fireStore.getPointByTitle($titlePoint.value);
+
+      map.getCurrentMarketSelected().id = point.id;
+
+      console.log(map.getCurrentMarketSelected());
+    }
 
     console.log(map.getCurrentMarketSelected().getPosition().lat());
     createAnNoty(
@@ -154,8 +183,21 @@ document
     );
   });
 
+$btnDelete.addEventListener("click", function (e) {
+  console.log(map.currentMarketSelected.id);
+  const pointId = map.currentMarketSelected.id;
+  fireStore.deltePoint(pointId);
+  createAnNoty(
+    "error",
+    `The point with name ${$titlePoint.value} was deleted`,
+    "topRight"
+  );
+  map.currentMarketSelected.setVisible(false);
+});
+
 function createPoint(point) {
-  db.addData(point);
+  //db.addData(point);
+  fireStore.createAPoint(point);
 }
 
 //google.maps.event.addDomListener(window, "load", map);

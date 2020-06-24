@@ -63,12 +63,11 @@ export default class Map {
   }
 
   renderAllPointsSaved(points) {
+    console.log(points);
     points.forEach((point) => {
       var currentLatLng = { lat: point.lat, lng: point.lng };
-
-      this.createMarker(currentLatLng, this.getGoogleMap()).setTitle(
-        point.title
-      );
+      console.log(point.id);
+      this.createMarker(currentLatLng, point.id).setTitle(point.title);
     });
   }
 
@@ -77,8 +76,8 @@ export default class Map {
     title.value = marker.getTitle();
   }
 
-  createMarker(latLng) {
-    const marker = this.MarkerCreator.createMarker(latLng, this.googleMap);
+  createMarker(latLng, id) {
+    const marker = this.MarkerCreator.createMarker(latLng, this.googleMap, id);
     this.markers.push(marker);
     //this.googleMap.panTo(latLng);
 

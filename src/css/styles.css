@@ -6,6 +6,7 @@ body {
 
 :root {
   --primary: rgb(68, 163, 211);
+  --danger: rgb(197, 69, 30);
   --border-radius: 25px 25px 25px 25px;
 
   --icon-color: rgb(102, 102, 102);
@@ -145,10 +146,22 @@ input[type="text"] {
 
 .btn:hover {
   background-color: transparent;
+}
+
+.btn-save:hover {
   border: 2px solid var(--primary);
   color: var(--primary);
 }
 
-.btn-title-point {
+.btn-delete:hover {
+  border: 2px solid var(--danger);
+  color: var(--danger);
+}
+
+.btn-save {
   background-color: var(--primary);
+}
+
+.btn-delete {
+  background-color: var(--danger);
 }
