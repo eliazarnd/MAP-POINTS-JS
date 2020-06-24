@@ -31,8 +31,17 @@
         <input
           id="savePoint"
           type="button"
-          class="btn btn-title-point"
+          class="btn btn-save"
           value="Save Point"
+        />
+      </div>
+      <div class="control-container">
+        <input
+          id="deletePoint"
+          type="button"
+          class="btn btn-delete"
+          value="Delete Point"
+          data-id=""
         />
       </div>
     </div>
@@ -54,7 +63,29 @@
       defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiAy0l0r6UoKIpzDRpap-tcmKv0fFstWI"
     ></script>
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>
+
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-firestore.js"></script>
     <script src="./node_modules/noty/lib/noty.min.js"></script>
     <script src="./src/js/app.js" type="module"></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyCjc_c1FskkaD39X6XLm7OMJ5frGhGxdbs",
+        authDomain: "testmap-280201.firebaseapp.com",
+        databaseURL: "https://testmap-280201.firebaseio.com",
+        projectId: "testmap-280201",
+        storageBucket: "testmap-280201.appspot.com",
+        messagingSenderId: "330483896852",
+        appId: "1:330483896852:web:fa4d4ac35add8e77c04d01",
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
   </body>
 </html>
