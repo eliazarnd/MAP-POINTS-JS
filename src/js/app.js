@@ -8,6 +8,12 @@ import createAnNoty from "./Noty/utilNoty.js";
 
 import FireStoreDb from "./fireStore.js";
 
+import "./firebase-config.js";
+
+window.addEventListener("hashchange", (e) => {
+  console.log(window.location);
+});
+
 //const db = new DataBase("Points");
 
 //db.createDataBase();
@@ -35,6 +41,9 @@ const markersURL = {
 };
 
 const map = new Map($map, "roadmap", new Marker(markersURL.test));
+
+console.log(map);
+//map.getGoogleMap().setVisible(false);
 
 map.getGoogleMap().setTilt(45);
 

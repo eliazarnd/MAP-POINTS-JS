@@ -35,6 +35,7 @@ export default class Map {
         lat: 32.610720489718126,
         lng: -115.44060356406249,
       },
+      fullScreenControl: false,
       zoom: 10,
       mapTypeId: mapType,
       /* 
