@@ -18,7 +18,7 @@ p {
 }
 .map {
   width: 100vw;
-  height: 100vh;
+  height: 90vh;
 }
 
 .cross-layer {
@@ -33,7 +33,7 @@ p {
 
 .controls {
   position: absolute;
-  top: 5px;
+  top: 70px;
   left: 50%;
   width: 70vw;
   height: 50px;
@@ -164,4 +164,16 @@ input[type="text"] {
 
 .btn-delete {
   background-color: var(--danger);
+}
+
+.modal.modal-modify {
+  width: 30%;
+}
+
+.img-container {
+  display: flex;
+  justify-content: center;
+}
+
+.img-login {
 }
