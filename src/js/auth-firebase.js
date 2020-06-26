@@ -12,6 +12,9 @@ export default class Authenticate {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
+      .then((user) => {
+        localStorage.setItem("logged", true);
+      })
       .catch((error) => {
         console.log(error);
       });
@@ -22,6 +25,7 @@ export default class Authenticate {
       .auth()
       .signOut()
       .then(() => {
+        localStorage.setItem("logged", false);
         console.log("Usuario deslogeado");
       });
   }
@@ -31,6 +35,7 @@ export default class Authenticate {
       .auth()
       .signInWithPopup(provider)
       .then((result) => {
+        localStorage.setItem("logged", true);
         console.log("Logeado con la cuenta de google");
       })
       .catch((error) => {
