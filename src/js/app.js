@@ -1,8 +1,6 @@
 import points from "./db.js";
 import map from "./Map.js";
 
-import DataBase from "./dataBase.js";
-
 import createAnNoty from "./Noty/utilNoty.js";
 
 import FireStoreDb from "./fireStore.js";
@@ -36,7 +34,7 @@ map.getGoogleMap().addListener("click", (eventMap) => {
   //console.log(map.getGoogleMap());
   console.log(points);
 
-  if (currentUserLogged == null) {
+  if (currentUserLogged === null || currentUserLogged === undefined) {
     createAnNoty(
       "warning",
       `You can not interact with map, until you logged to the app`,
@@ -44,7 +42,7 @@ map.getGoogleMap().addListener("click", (eventMap) => {
     );
   }
 
-  if (map.getCanCreateMarker()) {
+  if (map.getCanCreateMarker() && currentUserLogged !== undefined) {
     status = "create";
 
     console.log(status);
@@ -80,9 +78,22 @@ map.getGoogleMap().addListener("click", (eventMap) => {
 
 let currentUserLogged;
 
-firebase.auth().onAuthStateChanged(function (user) {
+const $btnSignIn = document.getElementById("btnSignIn");
+const $btnLogIn = document.getElementById("btnLogIn");
+
+firebase.auth().onAuthStateChanged(async function (user) {
   if (user) {
     currentUserLogged = user;
+    $btnSignIn.style.display = "none";
+    $btnLogIn.style.display = "none";
+    createAnNoty(
+      "success",
+      `Welcome to your map, ${
+        currentUserLogged.displayName || currentUserLogged.email
+      }`,
+      "topRight"
+    );
+
     console.log("El usuario esta logeado");
     console.log(user);
     // User is signed in.
@@ -95,13 +106,12 @@ firebase.auth().onAuthStateChanged(function (user) {
     //var providerData = user.providerData;
     // ...
 
-    console.log(fireStore);
-    fireStore.getAllPoints();
-    fireStore.getPointByTitle("Mi punto");
+    const pointsForUser = await fireStore.getPointsForUser(
+      currentUserLogged.uid
+    );
+
     setTimeout(function () {
-      console.log(fireStore.points);
-      console.log(map);
-      map.renderAllPointsSaved(fireStore.points);
+      map.renderAllPointsSaved(pointsForUser);
       const markers = map.getAllMarkers();
       console.log(markers);
 
@@ -117,6 +127,13 @@ firebase.auth().onAuthStateChanged(function (user) {
       });
     }, 2000);
   } else {
+    createAnNoty(
+      "alert",
+      `Good by, come soon ${
+        currentUserLogged.displayName || currentUserLogged.email
+      }`,
+      "topRight"
+    );
     console.log("El usuario esta deslogeado");
     // User is signed out.
     // ...
@@ -127,6 +144,9 @@ firebase.auth().onAuthStateChanged(function (user) {
       marker.setVisible(false);
     });
     map.deleteMarkers();
+
+    $btnSignIn.style.display = "block";
+    $btnLogIn.style.display = "block";
   }
 });
 
@@ -195,6 +215,7 @@ document
     console.log(event);
 
     let newPoint = {
+      owner: currentUserLogged.uid,
       title: $titlePoint.value,
       lat: map.getCurrentMarketSelected().getPosition().lat(),
       lng: map.getCurrentMarketSelected().getPosition().lng(),
@@ -239,7 +260,7 @@ function createPoint(point) {
 //google.maps.event.addDomListener(window, "load", map);
 
 document.querySelector("#show-noty").addEventListener("click", (e) => {
-  console.log("Show noty");
+  console.log(currentUserLogged.uid);
 
   createAnNoty("info", "The point was saved", "topRight");
 });

@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
 const signInForm = document.getElementById("signInForm");
 const logInForm = document.getElementById("logInForm");
 
-document.getElementById("btnSignIn").addEventListener("click", (e) => {
+document.getElementById("btnSignInAction").addEventListener("click", (e) => {
   console.log(signInForm);
 
   const email = signInForm.email.value;
@@ -33,7 +33,7 @@ document.getElementById("btnSignIn").addEventListener("click", (e) => {
   console.log(user);
 });
 
-document.getElementById("btnLogIn").addEventListener("click", (e) => {
+document.getElementById("btnLogInAction").addEventListener("click", (e) => {
   console.log(logInForm);
 
   const email = signInForm.email.value;
