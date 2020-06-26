@@ -1,6 +1,5 @@
 import points from "./db.js";
-import Map from "./Map.js";
-import Marker from "./Marker.js";
+import map from "./Map.js";
 
 import DataBase from "./dataBase.js";
 
@@ -8,22 +7,16 @@ import createAnNoty from "./Noty/utilNoty.js";
 
 import FireStoreDb from "./fireStore.js";
 
+const fireStore = new FireStoreDb();
+
 import "./firebase-config.js";
 
-window.addEventListener("hashchange", (e) => {
-  console.log(window.location);
-});
+console.log(map);
 
 //const db = new DataBase("Points");
 
 //db.createDataBase();
 
-const fireStore = new FireStoreDb();
-console.log(fireStore);
-fireStore.getAllPoints();
-fireStore.getPointByTitle("Mi punto");
-
-const $map = document.getElementById("map");
 const $address = document.querySelector(".address");
 const $titlePoint = document.querySelector(".title-point");
 const $btnDelete = document.querySelector(".btn-delete");
@@ -34,14 +27,6 @@ let status = "";
 
 //https://pngimg.com/uploads/gps/gps_PNG22.png
 
-const markersURL = {
-  default: "https://pngimg.com/uploads/gps/gps_PNG22.png",
-  normal: "https://image.flaticon.com/icons/svg/3063/3063196.svg",
-  test: "https://image.flaticon.com/icons/svg/1483/1483336.svg",
-};
-
-const map = new Map($map, "roadmap", new Marker(markersURL.test));
-
 console.log(map);
 //map.getGoogleMap().setVisible(false);
 
@@ -50,6 +35,15 @@ map.getGoogleMap().setTilt(45);
 map.getGoogleMap().addListener("click", (eventMap) => {
   //console.log(map.getGoogleMap());
   console.log(points);
+
+  if (currentUserLogged == null) {
+    createAnNoty(
+      "warning",
+      `You can not interact with map, until you logged to the app`,
+      "topRight"
+    );
+  }
+
   if (map.getCanCreateMarker()) {
     status = "create";
 
@@ -84,24 +78,57 @@ map.getGoogleMap().addListener("click", (eventMap) => {
   //console.log(markers);
 });
 
-setTimeout(function () {
-  //console.log(db.pointsList);
-  console.log(fireStore.points);
-  map.renderAllPointsSaved(fireStore.points);
-  const markers = map.getAllMarkers();
-  console.log(markers);
+let currentUserLogged;
 
-  markers.forEach((marker) => {
-    marker.addListener("click", function () {
-      renderAddress(marker, map);
-      map.setCurrentMarketSelected(marker);
+firebase.auth().onAuthStateChanged(function (user) {
+  if (user) {
+    currentUserLogged = user;
+    console.log("El usuario esta logeado");
+    console.log(user);
+    // User is signed in.
+    // var displayName = user.displayName;
+    //var email = user.email;
+    //var emailVerified = user.emailVerified;
+    //var photoURL = user.photoURL;
+    //var isAnonymous = user.isAnonymous;
+    //var uid = user.uid;
+    //var providerData = user.providerData;
+    // ...
+
+    console.log(fireStore);
+    fireStore.getAllPoints();
+    fireStore.getPointByTitle("Mi punto");
+    setTimeout(function () {
+      console.log(fireStore.points);
       console.log(map);
-      status = "edit";
-      console.log(status);
-      //map.focusMarkerPosition();
+      map.renderAllPointsSaved(fireStore.points);
+      const markers = map.getAllMarkers();
+      console.log(markers);
+
+      markers.forEach((marker) => {
+        marker.addListener("click", function () {
+          renderAddress(marker, map);
+          map.setCurrentMarketSelected(marker);
+          console.log(map);
+          status = "edit";
+          console.log(status);
+          //map.focusMarkerPosition();
+        });
+      });
+    }, 2000);
+  } else {
+    console.log("El usuario esta deslogeado");
+    // User is signed out.
+    // ...
+    currentUserLogged = null;
+    const markers = map.getAllMarkers();
+
+    markers.forEach((marker) => {
+      marker.setVisible(false);
     });
-  });
-}, 2000);
+    map.deleteMarkers();
+  }
+});
 
 function getCoordsFromPosition(position) {
   const coords = position.coords;
@@ -151,7 +178,7 @@ map.getGoogleMap().addListener("mousemove", () => {
 let isVisible = true;
 
 document.querySelector("#show-markers").addEventListener("click", (event) => {
-  console.log(event.target);
+  console.log(currentUserLogged);
   const markers = map.getAllMarkers();
   isVisible = !isVisible;
   markers.forEach((marker) => {
