@@ -80,7 +80,7 @@ map.getGoogleMap().addListener("click", (eventMap) => {
 
 let currentUserLogged;
 
-firebase.auth().onAuthStateChanged(function (user) {
+firebase.auth().onAuthStateChanged(async function (user) {
   if (user) {
     currentUserLogged = user;
     console.log("El usuario esta logeado");
@@ -94,14 +94,17 @@ firebase.auth().onAuthStateChanged(function (user) {
     //var uid = user.uid;
     //var providerData = user.providerData;
     // ...
-
-    console.log(fireStore);
+    console.log();
+    const pointsForUser = await fireStore.getPointsForUser(
+      currentUserLogged.uid
+    );
+    console.log(
+      pointsForUser
+    ); /* 
     fireStore.getAllPoints();
-    fireStore.getPointByTitle("Mi punto");
+    fireStore.getPointByTitle("Mi punto"); */
     setTimeout(function () {
-      console.log(fireStore.points);
-      console.log(map);
-      map.renderAllPointsSaved(fireStore.points);
+      map.renderAllPointsSaved(pointsForUser);
       const markers = map.getAllMarkers();
       console.log(markers);
 
@@ -195,6 +198,7 @@ document
     console.log(event);
 
     let newPoint = {
+      owner: currentUserLogged.uid,
       title: $titlePoint.value,
       lat: map.getCurrentMarketSelected().getPosition().lat(),
       lng: map.getCurrentMarketSelected().getPosition().lng(),
@@ -239,7 +243,7 @@ function createPoint(point) {
 //google.maps.event.addDomListener(window, "load", map);
 
 document.querySelector("#show-noty").addEventListener("click", (e) => {
-  console.log("Show noty");
+  console.log(currentUserLogged.uid);
 
   createAnNoty("info", "The point was saved", "topRight");
 });

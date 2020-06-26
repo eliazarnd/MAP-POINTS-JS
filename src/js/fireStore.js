@@ -45,6 +45,20 @@ export default class FireStoreDb {
     return point;
   }
 
+  async getPointsForUser(userId) {
+    const pointsRef = this.dbStore.collection("points");
+    const query = await pointsRef.where("owner", "==", userId);
+    let userPoints = await query.get();
+    let pointsForUser = [];
+    userPoints.forEach((doc) => {
+      const point = doc.data();
+      point.id = doc.id;
+      pointsForUser.push(point);
+    });
+
+    return pointsForUser;
+  }
+
   async deltePoint(id) {
     const response = this.dbStore.collection("points").doc(id).delete();
     return response;
