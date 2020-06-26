@@ -1,7 +1,9 @@
 import InfoWindow from "./InfoWindow.js";
 import Geocode from "./Geocode.js";
 
-export default class Map {
+import Marker from "./Marker.js";
+
+class Map {
   constructor(map, mapType, markerCreator) {
     this.googleMap = this.initMap(map, mapType);
     this.markers = [];
@@ -11,6 +13,14 @@ export default class Map {
     this.MarkerCreator = markerCreator;
     this.canCreateMarker = false;
     this.currentMarketSelected = null;
+  }
+
+  deleteMarkers() {
+    this.markers.splice(0, this.markers.length);
+  }
+
+  static getMapInstance() {
+    return this;
   }
 
   setCurrentMarketSelected(marker) {
@@ -97,3 +107,12 @@ export default class Map {
     return this.markers;
   }
 }
+
+const markersURL = {
+  default: "https://pngimg.com/uploads/gps/gps_PNG22.png",
+  normal: "https://image.flaticon.com/icons/svg/3063/3063196.svg",
+  test: "https://image.flaticon.com/icons/svg/1483/1483336.svg",
+};
+const $map = document.getElementById("map");
+const map = new Map($map, "roadmap", new Marker(markersURL.test));
+export default map;
